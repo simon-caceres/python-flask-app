@@ -47,3 +47,18 @@ def route():
 @app.route('/home', methods=['GET'])
 def home():
     return render_template('home.html', mensaje = "hola desde route")
+
+@app.route('/crear', methods=['POST', 'GET'])
+def crear():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        sql = 'insert into usuarios (username, email, nombre, apellido) values (%s, %s, %s, %s)'
+        values = (username, email, nombre, apellido)
+        cursor.execute(sql, values)
+        midb.commit()
+        return redirect(url_for('route'))
+
+    return render_template('crear.html')
