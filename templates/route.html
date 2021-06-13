@@ -1,1 +1,6 @@
 <h1>soy route</h1>
+<ul>
+    {% for usuario in usuarios %}
+        <li>nombre: {{ usuario.nombre }} username: {{ usuario.username }}</li>
+    {% endfor %}
+</ul>
