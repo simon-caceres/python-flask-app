@@ -1,21 +1,30 @@
-from flask import Flask, request, url_for
+from flask import Flask, request, url_for, redirect, abort
+from flask.templating import render_template
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return 'hola Mundo'
 
-@app.route('/post/<post_id>', methods=['GET'])
+@app.route('/post/<post_id>', methods=['POST', 'GET'])
 def get_post(post_id):
-    return 'el id del post es: {}'.format(post_id)
+    if request.method == 'GET':
+        return 'el id del post es: {}'.format(post_id)
+    else:
+        return {
+            "username": "user",
+            "email": "email.com"
+        }
 
-@app.route('/post/<post_id>', methods=['POST'])
-def post_post(post_id):
-    return 'el id del post es: {}'.format(post_id)
 
-@app.route('/route', methods=['POST'])
+@app.route('/route', methods=['POST', 'GET'])
 def route():
-    print(url_for('post_post', post_id = 2))
-    print(request.form['llave1'])
-    print(request.form['llave2'])
-    return 'recibimos tus datos'
+    #abort(403)
+    #return redirect(url_for('get_post', post_id = 2))
+    # print(request.form['llave1'])
+    # print(request.form['llave2'])
+    return render_template('route.html')
+
+@app.route('/home', methods=['GET'])
+def home():
+    return render_template('home.html', mensaje = "hola desde route")
